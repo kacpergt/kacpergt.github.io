@@ -6,7 +6,7 @@ const h1 = document.querySelector('h1');
 
 // Funkcja, która przesuwa przycisk "Nie" w losowe miejsce na ekranie
 function moveNoButton() {
-    // Obliczamy losowe współrzędne w granicach okna przeglądarki
+    // Obliczamy losowe współrzędne w granicach okna przeglądarki (z zapasem na wielkość przycisku)
     const maxX = window.innerWidth - noBtn.offsetWidth - 50;
     const maxY = window.innerHeight - noBtn.offsetHeight - 50;
 
@@ -18,10 +18,16 @@ function moveNoButton() {
     noBtn.style.top = `${randomY}px`;
 }
 
-// Ucieczka przy najechaniu myszką (dla komputerów)
+// 1. Ucieczka przy najechaniu myszką (dla komputerów)
 noBtn.addEventListener('mouseover', moveNoButton);
 
-// Ucieczka przy próbie kliknięcia/dotknięcia (dla telefonów)
+// 2. Ucieczka przy dotknięciu ekranu (dla telefonów i tabletów)
+noBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Zapobiega domyślnemu kliknięciu w tym miejscu
+    moveNoButton();
+});
+
+// Zabezpieczenie (gdyby ktoś mimo wszystko spróbował kliknąć)
 noBtn.addEventListener('click', (e) => {
     e.preventDefault();
     moveNoButton();
